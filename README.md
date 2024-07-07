@@ -19,7 +19,7 @@ To generate test with name and random selected questions use Generate endpoint(a
 
 
 Assignment:
-After generating test, assign it to a user using email adress(admin role) using post assignment endpoint.
+After generating test, assign it to a user using email adress using post assignment endpoint(admin role).
 
 
 Then login with assigned user email and see assigned tests with get assignment endpoint.
