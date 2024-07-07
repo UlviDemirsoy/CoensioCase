@@ -1,0 +1,72 @@
+version: '3.4'
+
+services:
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: rick
+      POSTGRES_PASSWORD: plumbus
+      POSTGRES_DB: c146
+    ports:
+      - "5477:5477"
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+
+  rabbitmq:
+    image: rabbitmq:management
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    restart: always
+
+  coensioapi:
+    image: senpaicq/coensioapi
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - Database=Host=postgres;Database=c146;Username=rick;Password=plumbus
+      - RabbitMQHost=rabbitmq
+      - RabbitMQPort=5672
+      - Redis=redis:6379
+      - Jwt__Key=8b5019f69b0210d66bdd14be8f3c1558d63e7d084fbd278a4974e15c898f8382
+      - Jwt__Issuer=coensio.com
+    ports:
+      - "5000:80"
+    depends_on:
+      - postgres
+      - rabbitmq
+      - redis
+    restart: on-failure
+
+  coensioevaluatorapi:
+    image: senpaicq/coensioevulatorapi
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - Database=Host=postgres;Database=c146;Username=rick;Password=plumbus
+      - RabbitMQHost=rabbitmq
+      - RabbitMQPort=5672
+      - Redis=redis:6379
+      - Jwt__Key=8b5019f69b0210d66bdd14be8f3c1558d63e7d084fbd278a4974e15c898f8382
+      - Jwt__Issuer=coensio.com
+    ports:
+      - "5001:80"
+    depends_on:
+      - postgres
+      - rabbitmq
+      - redis
+    restart: on-failure
+  
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
