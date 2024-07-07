@@ -1,0 +1,45 @@
+version: '3.4'
+
+services:
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: rick
+      POSTGRES_PASSWORD: plumbus
+      POSTGRES_DB: c146
+    ports:
+      - "5477:5477"
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+
+  rabbitmq:
+    image: rabbitmq:management
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+  
+  coensioevulatorapi:
+    image: ${DOCKER_REGISTRY-}coensioevulatorapi
+    build:
+      context: .
+      dockerfile: CoensioEvulatorApi/Dockerfile
+    depends_on:
+      - postgres
+      - redis
+      - rabbitmq
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - Database=Host=postgres;Database=c146;Username=rick;Password=plumbus
+      - RabbitMQHost=rabbitmq
+      - RabbitMQPort=5672
+      - Redis=redis:6379
+      - Jwt__Key=8b5019f69b0210d66bdd14be8f3c1558d63e7d084fbd278a4974e15c898f8382
+      - Jwt__Issuer=coensio.com
+    ports:
+      - "5000:80"
