@@ -7,8 +7,8 @@ namespace CoensioApi.Services.Abstracts
     {
         CodingQuestion UpdateCodingQuestionById(int id, dtoUpdateCodingQuestion codingQuestion);
         void DeleteCodingQuestionById(int id);
-        CodingQuestion GetCodingQuestionById(int id);
+        dtoListCodingQuestion GetCodingQuestionById(int id);
         CodingQuestion InsertCodingQuestion(dtoCreateCodingQuestion newCodingQuestion);
-        List<CodingQuestion> GetAllCodingQuestions();
+        List<dtoListCodingQuestion> GetAllCodingQuestions();
     }
 }

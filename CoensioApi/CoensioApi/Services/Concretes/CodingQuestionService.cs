@@ -26,13 +26,26 @@ namespace CoensioApi.Services.Concretes
             _repo.Delete(question);
         }
 
-        public List<CodingQuestion> GetAllCodingQuestions()
+        public List<dtoListCodingQuestion> GetAllCodingQuestions()
         {
             var questions = _repo.GetAll();
-            return questions.ToList();
+
+            List<dtoListCodingQuestion> list = new List<dtoListCodingQuestion>();
+
+            foreach (CodingQuestion question in questions)
+            {
+                list.Add(new dtoListCodingQuestion
+                {
+                    CodeTemplate = question.CodeTemplate,
+                    Id = question.Id,
+                    Input = question.Input,
+                    Output = question.Output
+                });
+            }
+            return list.ToList();
         }
 
-        public CodingQuestion GetCodingQuestionById(int id)
+        public dtoListCodingQuestion GetCodingQuestionById(int id)
         {
             if (id <= 0)
             {
@@ -44,8 +57,14 @@ namespace CoensioApi.Services.Concretes
             {
                 throw new KeyNotFoundException("Question not found");
             }
+            dtoListCodingQuestion dto = new dtoListCodingQuestion{
+                CodeTemplate = question.CodeTemplate,
+                Id = question.Id,
+                Input = question.Input,
+                Output = question.Output
+            };
 
-            return question;
+            return dto;
         }
 
         public CodingQuestion InsertCodingQuestion(dtoCreateCodingQuestion question)

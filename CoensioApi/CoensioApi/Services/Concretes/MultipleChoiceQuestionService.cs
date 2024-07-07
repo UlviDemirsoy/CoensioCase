@@ -24,13 +24,27 @@ namespace CoensioApi.Services.Concretes
             _repo.Delete(question);
         }
 
-        public List<MultipleChoiceQuestion> GetAllMultipleChoiceQuestions()
+        public List<dtoListMultipleChoiceQuestion> GetAllMultipleChoiceQuestions()
         {
             var questions = _repo.GetAll();
-            return questions.ToList();
+
+            List<dtoListMultipleChoiceQuestion> list = new List<dtoListMultipleChoiceQuestion>();
+
+            foreach (MultipleChoiceQuestion question in questions)
+            {
+                list.Add(new dtoListMultipleChoiceQuestion
+                {
+                    QuestionText = question.QuestionText,
+                    TrueAnswer = question.TrueAnswer,
+                    Options = question.Options,
+                    Id = question.Id,
+                });
+            }
+
+            return list;
         }
 
-        public MultipleChoiceQuestion GetMultipleChoiceQuestionById(int id)
+        public dtoListMultipleChoiceQuestion GetMultipleChoiceQuestionById(int id)
         {
             if (id <= 0)
             {
@@ -42,8 +56,15 @@ namespace CoensioApi.Services.Concretes
             {
                 throw new KeyNotFoundException("Question not found");
             }
+            dtoListMultipleChoiceQuestion dto= new dtoListMultipleChoiceQuestion
+            {
+                QuestionText = question.QuestionText,
+                TrueAnswer = question.TrueAnswer,
+                Options = question.Options,
+                Id = question.Id,
+            };
 
-            return question;
+            return dto;
         }
 
         public MultipleChoiceQuestion InsertMultipleChoiceQuestion(dtoCreateMultipleChoiceQuestion question)

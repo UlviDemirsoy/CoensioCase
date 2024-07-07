@@ -25,13 +25,26 @@ namespace CoensioApi.Services.Concretes
             _repo.Delete(question);
         }
 
-        public List<FreeTextQuestion> GetAllFreeTextQuestions()
+        public List<dtoListFreeTextQuestion> GetAllFreeTextQuestions()
         {
             var questions = _repo.GetAll();
-            return questions.ToList();
+
+            List<dtoListFreeTextQuestion> list = new List<dtoListFreeTextQuestion>();
+
+            foreach (FreeTextQuestion question in questions)
+            {
+                list.Add(new dtoListFreeTextQuestion
+                {
+                    QuestionText = question.QuestionText,
+                    TrueAnswerText = question.TrueAnswerText,
+                    Id = question.Id,
+                });
+            }
+
+            return list;
         }
 
-        public FreeTextQuestion GetFreeTextQuestionById(int id)
+        public dtoListFreeTextQuestion GetFreeTextQuestionById(int id)
         {
             if (id <= 0)
             {
@@ -43,8 +56,15 @@ namespace CoensioApi.Services.Concretes
             {
                 throw new KeyNotFoundException("Question not found");
             }
+            dtoListFreeTextQuestion dto = new dtoListFreeTextQuestion
+            {
+                QuestionText = question.QuestionText,
+                TrueAnswerText = question.TrueAnswerText,
+                Id = question.Id,
+            };
 
-            return question;
+
+            return dto;
         }
 
         public FreeTextQuestion InsertFreeTextQuestion(dtoCreateFreeTextQuestion question)

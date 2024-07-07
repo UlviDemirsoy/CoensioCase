@@ -7,8 +7,8 @@ namespace CoensioApi.Services.Abstracts
     {
         MultipleChoiceQuestion UpdateMultipleChoiceQuestionById(int id, dtoUpdateMultipleChoiceQuestion codingQuestion);
         void DeleteMultipleChoiceQuestionById(int id);
-        MultipleChoiceQuestion GetMultipleChoiceQuestionById(int id);
+        dtoListMultipleChoiceQuestion GetMultipleChoiceQuestionById(int id);
         MultipleChoiceQuestion InsertMultipleChoiceQuestion(dtoCreateMultipleChoiceQuestion newMultipleChoiceQuestion);
-        List<MultipleChoiceQuestion> GetAllMultipleChoiceQuestions();
+        List<dtoListMultipleChoiceQuestion> GetAllMultipleChoiceQuestions();
     }
 }
